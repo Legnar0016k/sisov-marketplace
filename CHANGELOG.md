@@ -731,3 +731,111 @@ git add index.html styles.css sw.js && git commit -m "feat(pwa): actualización 
 Versión: 3.2.0"
 =============================================================================
 
+📦 CHANGELOG.md - SISOV Market
+markdown
+# 📦 SISOV Market - Changelog
+
+## [3.3.0] - 2026-04-16
+
+### 🚀 Mejora Visual para Productos Agotados
+
+#### Badge Rojo Carmesí
+- **Corrección crítica**: El badge de productos agotados ahora usa la clase `stock-badge-out` (rojo carmesí)
+- Anteriormente los productos agotados mostraban badge verde (confundible con disponibles)
+- Ahora la diferenciación es clara: 🟢 Verde (disponible) → 🟡 Naranja (pocas unidades) → 🔴 Rojo (agotado)
+
+#### Marca de Agua "AGOTADO"
+- Productos sin stock muestran una marca de agua diagonal semi-transparente
+- Texto "AGOTADO" con fondo rojo oscuro y borde claro
+- Posicionada en el centro de la imagen del producto
+
+#### Mejoras Visuales Adicionales
+- Imagen del producto con opacidad 50% cuando está agotado
+- Fondo oscurecido con `backdrop-filter: blur()` para mayor contraste
+- La marca de agua permanece legible incluso sobre imágenes oscuras
+
+### 🔧 Cambios Técnicos
+
+#### `render-grid.js` (v2.1.0)
+javascript
+// Antes: solo manejaba 'low' y 'available'
+const badgeClass = badge.type === 'low' ? 'stock-badge-low' : 'stock-badge-available';
+
+// Después: maneja los tres estados
+let badgeClass = 'stock-badge-available';
+if (badge.type === 'low') badgeClass = 'stock-badge-low';
+else if (badge.type === 'out') badgeClass = 'stock-badge-out';
+styles.css
+.stock-badge-out ya existente con colores rojos (#fee2e2 / #dc2626)
+
+Sin cambios adicionales necesarios
+
+📊 Comparativa Visual
+Estado	Stock	Badge	Marca de agua	Opacidad imagen
+Disponible	> 5	🟢 Verde	No	100%
+Pocas unidades	1 a 5	🟡 Naranja	No	100%
+Agotado	≤ 0	🔴 Rojo	"AGOTADO"	50%
+[3.2.0] - 2026-04-15
+🚀 PWA y Actualización Automática
+Service Worker (sw.js) v3.0.0
+Actualización automática inteligente: Verifica nuevas versiones periódicamente
+
+Notificación al usuario: Toast con "Nueva versión disponible"
+
+Activación inmediata: skipWaiting() fuera de waitUntil
+
+Comunicación bidireccional: Mensajes SW ↔ Cliente
+
+Estrategias de caché optimizadas: HTML (Network First), JS/CSS (Stale-While-Revalidate), Imágenes (Cache First)
+
+Filtros Responsive
+Barra de filtros rediseñada para móvil: búsqueda siempre visible + panel colapsable
+
+Botón "Filtros avanzados" con efecto de onda expansiva morada
+
+Sincronización automática entre filtros móvil y desktop
+
+Accesibilidad
+:focus-visible para navegación por teclado
+
+Áreas táctiles mínimas de 44px (recomendación WCAG)
+
+[3.1.0] - 2026-04-14
+🚀 Conversión de Moneda (USD → VES)
+MarketCurrency module: Conversión usando API del BCV (ve.dolarapi.com)
+
+Caché de tasa por 30 minutos con fallback automático
+
+Swap de precios: bolívares como moneda principal, dólar como referencia
+
+Actualización automática de tasa cada 8 horas
+
+🎨 UI Extras
+MarketUIExtras module: Indicador de tasa BCV en header
+
+Menú móvil responsive con toggle
+
+[3.0.0] - 2025-01-XX
+🚀 Base Inicial
+Sistema de caché inteligente con localStorage (1 hora)
+
+Filtros con debounce (300ms)
+
+Lazy loading de imágenes
+
+WebSocket con reconexión automática
+
+Estructura modular completa (core, cache, filters, categories, render, websocket)
+
+📝 Notas de Actualización
+Para usuarios que ya tienen la app instalada:
+La app se actualizará automáticamente
+
+Aparecerá un toast notificando la nueva versión
+
+Al hacer clic en "Actualizar", la página se recargará con los cambios
+
+Para nuevos usuarios:
+La experiencia es inmediata: los productos agotados se ven claramente diferenciados
+
+© 2024-2026 SISOV PRO - Todos los derechos reservados.

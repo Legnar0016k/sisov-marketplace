@@ -1,0 +1,78 @@
+/* Estilos personalizados - Manteniendo colores originales */
+.hero-gradient {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+.product-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Skeleton loader animation */
+.skeleton {
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+    to { background-position: -200% 0; }
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Stock badges */
+.stock-badge-low {
+    background: #fef3c7;
+    color: #d97706;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stock-badge-available {
+    background: #d1fae5;
+    color: #059669;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Sticky improvements */
+@media (max-width: 1024px) {
+    .sticky\:top-20 {
+        top: 70px;
+    }
+}
+
+@media (max-width: 640px) {
+    .sticky\:top-20 {
+        top: 60px;
+    }
+}
+
+.bg-white\/95 {
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+}
+
+
+

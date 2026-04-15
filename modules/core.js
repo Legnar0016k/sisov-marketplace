@@ -44,9 +44,9 @@ const MarketCore = (function() {
     }
 
     function getStockBadge(stock) {
-        if (stock <= 0) return { type: 'out', text: 'Agotado', icon: 'x-circle' };
-        if (stock <= 5) return { type: 'low', text: 'Pocas unidades', icon: 'alert-circle' };
-        return { type: 'available', text: 'Disponible', icon: 'check-circle' };
+    if (stock <= 0) return { type: 'out', text: 'Agotado', icon: 'x-circle' };
+    if (stock <= 5) return { type: 'low', text: 'Pocas unidades', icon: 'alert-circle' };
+    return { type: 'available', text: 'Disponible', icon: 'check-circle' };
     }
 
     function formatearPrecio(precio) {

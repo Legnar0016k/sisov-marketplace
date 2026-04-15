@@ -16,7 +16,7 @@ const AppManagerMarket = {
         { nombre: 'MarketRender', archivo: 'modules/render-grid.js' },
         { nombre: 'MarketFilters', archivo: 'modules/filters.js' },
         { nombre: 'MarketCategories', archivo: 'modules/categories.js' },
-        // { nombre: 'MarketWebSocket', archivo: 'modules/websocket.js' },
+        { nombre: 'MarketWebSocket', archivo: 'modules/websocket.js' },
         { nombre: 'MarketUIExtras', archivo: 'modules/ui-extras.js' }  // NUEVO
     ],
 
@@ -109,14 +109,14 @@ const AppManagerMarket = {
     }
 
     // // 9. WebSocket en segundo plano
-    // if (window.MarketCore.state.productos.length > 0) {
-    //     setTimeout(() => {
-    //         if (window.MarketWebSocket?.suscribir) {
-    //             window.MarketWebSocket.suscribir();
-    //             console.log('[Market] ✅ WebSocket iniciado');
-    //         }
-    //     }, 3000);
-    // }
+    if (window.MarketCore.state.productos.length > 0) {
+        setTimeout(() => {
+            if (window.MarketWebSocket?.suscribir) {
+                window.MarketWebSocket.suscribir();
+                console.log('[Market] ✅ WebSocket iniciado');
+            }
+        }, 3000);
+    }
 },
 
     async _esperarDOM() {

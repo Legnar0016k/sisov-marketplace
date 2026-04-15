@@ -35,7 +35,8 @@ const PRECACHE_URLS = [
     '/modules/render-grid.js',
     '/modules/filters.js',
     '/modules/categories.js',
-    '/modules/ui-extras.js'
+    '/modules/ui-extras.js',
+    '/modules/websocket.js'
 ];
 
 // URLs que NO deben ser cacheadas bajo ninguna circunstancia

@@ -18,7 +18,7 @@ const STATIC_RESOURCES = [
   '/modules/render-grid.js',
   '/modules/filters.js',
   '/modules/categories.js',
-  '/modules/websocket.js',
+  // '/modules/websocket.js',
   '/modules/ui-extras.js'
 ];
 

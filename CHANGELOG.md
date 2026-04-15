@@ -595,3 +595,139 @@ Verificar modo offline
 Configurar notificaciones push (opcional)
 
 Agregar analytics para medir uso
+=================================================================
+ CHANGELOG.md - Actualización
+markdown
+# 📦 SISOV Market - Changelog
+
+## [3.2.0] - 2026-04-15
+
+### 🚀 Mejoras en PWA y Actualización Automática
+
+#### Service Worker (`sw.js`) - Nueva Versión
+- **Actualización automática inteligente**: El Service Worker ahora verifica nuevas versiones periódicamente
+- **Notificación al usuario**: Cuando hay una nueva versión, el usuario recibe un toast notificando "Nueva versión disponible"
+- **Activación inmediata**: `skipWaiting()` fuera de waitUntil para activación sin recargar
+- **Comunicación bidireccional**: Sistema de mensajes entre SW y cliente (`SKIP_WAITING`, `CHECK_VERSION`, `FORCE_UPDATE`, `CLEAR_CACHE`)
+- **Estrategias de caché optimizadas**:
+  - HTML: Network First con fallback a offline
+  - JS/CSS: Stale-While-Revalidate (caché + actualización en segundo plano)
+  - Imágenes: Cache First con SVG por defecto
+  - APIs (Railway, DolarAPI): Sin cacheo
+- **Limpieza automática**: Elimina cachés antiguos al activar nueva versión
+- **Soporte para sincronización en segundo plano** (`sync` event)
+- **Soporte para notificaciones push** (preparado para futuro)
+
+#### Diseño y UI - Filtros Responsive
+- **Barra de filtros rediseñada para móvil**:
+  - Versión móvil: Búsqueda siempre visible + panel de filtros colapsable
+  - Versión desktop: Layout horizontal completo
+  - Botón "Filtros avanzados" con efecto de onda expansiva morada
+  - Sincronización automática entre filtros móvil y desktop
+
+#### Estilos CSS (`styles.css`)
+- **Corrección de advertencia**: Añadida propiedad estándar `line-clamp: 2` junto a `-webkit-line-clamp`
+- **Mejoras de accesibilidad**:
+  - `:focus-visible` para navegación por teclado
+  - `min-height: 44px` para elementos clickeables (recomendación WCAG)
+- **Nuevo badge**: `.stock-badge-out` para productos agotados
+- **Clase sticky mejorada**: `.sticky\:top-20` con valores responsive explícitos
+
+### 📱 PWA - Instalación y Actualización
+- **Verificación periódica**: El SW verifica actualizaciones cada hora
+- **Verificación al volver**: Detecta cambios cuando el usuario regresa a la página
+- **Toast de actualización**: Notificación visual amigable cuando hay nueva versión
+- **Forzar actualización**: Método `FORCE_UPDATE` desde consola si es necesario
+
+### 🔧 Cambios Técnicos
+
+#### Service Worker (v3.0.0)
+```javascript
+// Nuevo sistema de versionado
+const APP_VERSION = 'v3.0.0';
+const CACHE_NAME = `sisov-market-${APP_VERSION}`;
+
+// Activación inmediata
+self.skipWaiting();  // Fuera de waitUntil
+
+// Notificación a clientes
+clients.forEach(client => {
+    client.postMessage({ type: 'SW_UPDATED', version: APP_VERSION });
+});
+Filtros Responsive
+searchInput: Búsqueda unificada (móvil/desktop)
+
+toggleFiltersBtn: Botón colapsable con animación
+
+filtersPanel: Panel expandible con filtros avanzados
+
+🐛 Correcciones
+Advertencia CSS line-clamp resuelta añadiendo propiedad estándar
+
+Sincronización de filtros entre móvil y desktop
+
+Mejor manejo de imágenes fallback con SVG por defecto
+
+📊 Impacto en el Usuario
+Mejora	Beneficio
+Actualización automática	No necesita recargar manualmente
+Filtros responsive	Menos espacio ocupado en móvil
+Notificación visual	Sabe cuándo hay nueva versión
+Caché optimizado	Experiencia offline mejorada
+[3.1.0] - 2026-04-14
+🚀 Características Anteriores
+Conversión de moneda USD → VES con API del BCV
+
+Sistema de caché inteligente (1 hora)
+
+WebSocket desactivado por defecto
+
+Header rediseñado con tasa BCV integrada
+
+[3.0.0] - 2025-01-XX
+🚀 Base Inicial
+Sistema de caché con localStorage
+
+Filtros con debounce (300ms)
+
+Lazy loading de imágenes
+
+WebSocket con reconexión
+
+Estructura modular completa
+
+text
+
+---
+
+## 📝 Mensaje de Commit
+
+bash
+git add index.html styles.css sw.js && git commit -m "feat(pwa): actualización automática y filtros responsive
+
+🚀 NUEVAS CARACTERÍSTICAS:
+- Service Worker v3.0.0 con actualización automática
+- Notificación al usuario de nuevas versiones (toast)
+- Verificación periódica de actualizaciones (cada hora)
+- Filtros rediseñados: móvil compacto + desktop completo
+
+🎨 MEJORAS UI/UX:
+- Botón 'Filtros avanzados' con efecto de onda expansiva
+- Panel de filtros colapsable en móvil
+- Sincronización automática móvil ↔ desktop
+- Mejoras de accesibilidad (focus-visible, min-height)
+
+🐛 CORRECCIONES:
+- Advertencia CSS line-clamp resuelta
+- Mejor manejo de imágenes fallback SVG
+- Clase sticky mejorada con valores responsive
+
+📱 PWA:
+- skipWaiting() para activación inmediata
+- Comunicación SW ↔ cliente con postMessage
+- Limpieza automática de cachés antiguos
+- Soporte para sincronización en segundo plano
+
+Versión: 3.2.0"
+=============================================================================
+

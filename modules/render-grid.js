@@ -21,38 +21,52 @@ const MarketRender = (function() {
 
     function generarHtmlTarjeta(producto) {
     const badge = core.getStockBadge(producto.stock);
-    const badgeClass = badge.type === 'low' ? 'stock-badge-low' : 'stock-badge-available';
     
-    // Usar el precio en USD para la tarjeta (se formateará después con la tasa)
+    // CORRECCIÓN: Manejar los tres tipos de badge
+    let badgeClass = 'stock-badge-available';
+    if (badge.type === 'low') {
+        badgeClass = 'stock-badge-low';
+    } else if (badge.type === 'out') {
+        badgeClass = 'stock-badge-out';
+    }
+    
     const precioUSD = producto.price || 0;
     
     const imageHtml = producto.imageUrl && producto.imageUrl.trim() !== ''
         ? `<img src="${core.escapeHtml(producto.imageUrl)}" alt="${core.escapeHtml(producto.name)}" loading="lazy" class="w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105">`
         : `<div class="w-full h-full bg-gradient-to-br from-indigo-50 to-slate-100 flex items-center justify-center"><i data-lucide="package" class="w-8 h-8 text-indigo-300"></i></div>`;
     
+    // Si el producto está agotado, añadir marca de agua
+    const isOutOfStock = badge.type === 'out';
+    const waterMark = isOutOfStock ? `
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-xl flex items-center justify-center z-20">
+            <div class="transform -rotate-12 bg-red-600/90 text-white px-4 py-2 rounded-lg font-bold text-lg shadow-lg border border-red-300">
+                AGOTADO
+            </div>
+        </div>
+    ` : '';
+    
     return `
-    <div class="product-card bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-md transition-all" data-product-id="${producto.id}" data-price-usd="${precioUSD}">
+    <div class="product-card bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-md transition-all relative" data-product-id="${producto.id}" data-price-usd="${precioUSD}">
         <div class="relative bg-slate-50 p-3">
-            <div class="aspect-square rounded-lg overflow-hidden bg-white">${imageHtml}</div>
+            <div class="aspect-square rounded-lg overflow-hidden bg-white ${isOutOfStock ? 'opacity-50' : ''}">${imageHtml}</div>
             <div class="absolute top-4 right-4">
                 <span class="${badgeClass} text-[10px] px-2 py-0.5 product-badge">
                     <i data-lucide="${badge.icon}" class="w-2.5 h-2.5"></i> ${badge.text}
                 </span>
             </div>
+            ${waterMark}
         </div>
         <div class="p-3 pt-0">
             <h3 class="font-semibold text-slate-800 text-sm line-clamp-2">${core.escapeHtml(producto.name)}</h3>
             <div class="mb-2 mt-1">
                 <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-full">${core.escapeHtml(producto.category)}</span>
             </div>
-            <!-- PRECIOS: VES (principal) + USD (referencia) -->
             <div class="mt-2">
-                <!-- BOLÍVARES - PRINCIPAL (más grande y destacado) -->
                 <div class="product-price-ves mb-1">
                     <i data-lucide="loader-2" class="w-3 h-3 inline animate-spin mr-1"></i>
                     <span class="text-sm text-slate-400">Cargando...</span>
                 </div>
-                <!-- DÓLARES - REFERENCIA (más pequeño y secundario) -->
                 <div class="flex items-center gap-1">
                     <span class="text-xs text-slate-400">USD</span>
                     <span class="text-sm font-medium text-slate-500 product-price-usd">${core.formatearPrecio(precioUSD)}</span>

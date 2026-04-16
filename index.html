@@ -362,76 +362,113 @@
         })();
 
         // ========== PWA - SERVICE WORKER CON ACTUALIZACIÓN AUTOMÁTICA ==========
-        
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', async () => {
-                try {
-                    const registration = await navigator.serviceWorker.register('/sw.js');
-                    console.log('[PWA] Service Worker registrado:', registration.scope);
-                
-                    let pendingUpdate = false;
-                    let updateTimer = null;
-                
-                    // Verificar actualizaciones periódicamente (cada hora)
-                    setInterval(() => {
-                        if (!pendingUpdate) {
-                            registration.update();
-                        }
-                    }, 60 * 60 * 1000);
-                
-                    // Detectar nueva versión
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        console.log('[PWA] Nueva versión detectada');
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', async () => {
+                    try {
+                        const registration = await navigator.serviceWorker.register('/sw.js');
+                        console.log('[PWA] ✅ Service Worker registrado:', registration.scope);
                     
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                console.log('[PWA] Nueva versión lista para activar');
-                                pendingUpdate = true;
-                                
-                                // ACTUALIZACIÓN AUTOMÁTICA después de 2 segundos
-                                if (updateTimer) clearTimeout(updateTimer);
-                                updateTimer = setTimeout(() => {
-                                    console.log('[PWA] 🔄 Actualizando automáticamente...');
-                                    window.location.reload();
-                                }, 2000);
+                        let pendingUpdate = false;
+                        let updateTimer = null;
+                        let notificationShown = false;
+                    
+                        // Verificar actualizaciones periódicamente (cada hora)
+                        setInterval(() => {
+                            if (!pendingUpdate) {
+                                console.log('[PWA] 🔍 Verificando actualizaciones...');
+                                registration.update();
+                            }
+                        }, 60 * 60 * 1000);
+                    
+                        // Detectar nueva versión
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            console.log('[PWA] 🆕 Nueva versión detectada en el servidor');
+                        
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('[PWA] 📦 Nueva versión lista para activar');
+                                    pendingUpdate = true;
+
+                                    // === SISTEMA PRIMARIO: Actualización automática silenciosa ===
+                                    if (updateTimer) clearTimeout(updateTimer);
+                                    updateTimer = setTimeout(() => {
+                                        console.log('[PWA] 🔄 Actualización automática en 2 segundos...');
+                                        // Pequeña cuenta regresiva visual en consola
+                                        let countdown = 2;
+                                        const interval = setInterval(() => {
+                                            console.log(`[PWA] ⏳ Recargando en ${countdown}...`);
+                                            countdown--;
+                                            if (countdown < 0) clearInterval(interval);
+                                        }, 1000);
+
+                                        setTimeout(() => {
+                                            console.log('[PWA] 🔄 Ejecutando recarga automática...');
+                                            window.location.reload();
+                                        }, 2000);
+                                    }, 2000);
+
+                                    // === SISTEMA SECUNDARIO: Notificación visible (por si el usuario quiere actualizar antes) ===
+                                    if (!notificationShown) {
+                                        notificationShown = true;
+                                        setTimeout(() => {
+                                            mostrarNotificacionActualizacion(() => {
+                                                // Si el usuario hace clic en "Actualizar", cancelamos la recarga automática
+                                                if (updateTimer) clearTimeout(updateTimer);
+                                                console.log('[PWA] 🔄 Usuario solicitó actualización manual');
+                                                window.location.reload();
+                                            });
+                                        }, 500); // Pequeño retraso para no saturar
+                                    }
+                                }
+                            });
+                        });
+                    
+                        // Forzar verificación al volver a la página
+                        document.addEventListener('visibilitychange', () => {
+                            if (!document.hidden && !pendingUpdate) {
+                                console.log('[PWA] 👁️ Página visible, verificando actualizaciones...');
+                                registration.update();
                             }
                         });
-                    });
-                
-                    // Forzar verificación al volver a la página
-                    document.addEventListener('visibilitychange', () => {
-                        if (!document.hidden && !pendingUpdate) {
-                            registration.update();
-                        }
-                    });
-                
-                    // Comunicación con el Service Worker
-                    navigator.serviceWorker.addEventListener('controllerchange', () => {
-                        console.log('[PWA] Controller cambiado, recargando página...');
-                        window.location.reload();
-                    });
-                
-                } catch (error) {
-                    console.error('[PWA] Error:', error);
-                }
-            });
-        }
+                    
+                        // Comunicación con el Service Worker
+                        navigator.serviceWorker.addEventListener('controllerchange', () => {
+                            console.log('[PWA] 🎮 Controller cambiado, nueva versión activa');
+                        });
+                    
+                    } catch (error) {
+                        console.error('[PWA] ❌ Error:', error);
+                    }
+                });
+            }
 
-        function mostrarNotificacionActualizacion() {
-            const existingToast = document.querySelector('.update-toast');
-            if (existingToast) existingToast.remove();
-
-            const toast = document.createElement('div');
-            toast.className = 'update-toast';
-            toast.innerHTML = `
-                <div style="position: fixed; bottom: 20px; left: 20px; right: 20px; background: #4f46e5; color: white; padding: 14px 20px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 10000; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);">
-                    <span style="font-size: 14px;">🔄 Nueva versión disponible</span>
-                    <button onclick="location.reload()" style="background: white; color: #4f46e5; border: none; padding: 6px 16px; border-radius: 10px; font-weight: 600; cursor: pointer;">Actualizar</button>
-                </div>
-            `;
-            document.body.appendChild(toast);
-        }
+            // Función de notificación visible (SISTEMA SECUNDARIO)
+            function mostrarNotificacionActualizacion(onUpdate) {
+                const existingToast = document.querySelector('.update-toast');
+                if (existingToast) existingToast.remove();
+            
+                const toast = document.createElement('div');
+                toast.className = 'update-toast';
+                toast.innerHTML = `
+                    <div style="position: fixed; bottom: 20px; left: 20px; right: 20px; background: #4f46e5; color: white; padding: 14px 20px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 10000; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 14px; font-weight: 600;">🔄 Nueva versión disponible</span>
+                            <span style="font-size: 11px; opacity: 0.8;">La página se actualizará automáticamente en unos segundos</span>
+                        </div>
+                        <button onclick="this.closest('.update-toast').remove(); (${onUpdate.toString()})()" style="background: white; color: #4f46e5; border: none; padding: 6px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: transform 0.1s;">
+                            Actualizar ahora
+                        </button>
+                    </div>
+                `;
+                document.body.appendChild(toast);
+                
+                // Auto-cerrar después de 8 segundos (la recarga automática ya está programada)
+                setTimeout(() => {
+                    if (toast && toast.remove) toast.remove();
+                }, 8000);
+            }
+        
 
         // Detectar modo standalone (app instalada)
         if (window.matchMedia('(display-mode: standalone)').matches) {

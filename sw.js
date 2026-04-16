@@ -383,4 +383,16 @@ self.addEventListener('notificationclick', (event) => {
     }
 });
 
+// ======================================================
+// CONTROL DE ACTUALIZACIÓN AUTOMÁTICA
+// ======================================================
+
+// Escuchar mensajes del cliente
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        console.log('[SW] ⏩ skipWaiting solicitado, activando nueva versión...');
+        self.skipWaiting();
+    }
+});
+
 console.log(`[SW] ✅ Service Worker ${APP_VERSION} inicializado correctamente`);

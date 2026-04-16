@@ -362,31 +362,56 @@
         })();
 
         // ========== PWA - SERVICE WORKER CON ACTUALIZACIÓN AUTOMÁTICA ==========
+        
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', async () => {
                 try {
                     const registration = await navigator.serviceWorker.register('/sw.js');
                     console.log('[PWA] Service Worker registrado:', registration.scope);
-
+                
+                    let pendingUpdate = false;
+                    let updateTimer = null;
+                
                     // Verificar actualizaciones periódicamente (cada hora)
-                    setInterval(() => registration.update(), 60 * 60 * 1000);
-
+                    setInterval(() => {
+                        if (!pendingUpdate) {
+                            registration.update();
+                        }
+                    }, 60 * 60 * 1000);
+                
                     // Detectar nueva versión
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
+                        console.log('[PWA] Nueva versión detectada');
+                    
                         newWorker.addEventListener('statechange', () => {
                             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                console.log('[PWA] Nueva versión disponible');
-                                mostrarNotificacionActualizacion();
+                                console.log('[PWA] Nueva versión lista para activar');
+                                pendingUpdate = true;
+                                
+                                // ACTUALIZACIÓN AUTOMÁTICA después de 2 segundos
+                                if (updateTimer) clearTimeout(updateTimer);
+                                updateTimer = setTimeout(() => {
+                                    console.log('[PWA] 🔄 Actualizando automáticamente...');
+                                    window.location.reload();
+                                }, 2000);
                             }
                         });
                     });
-
+                
                     // Forzar verificación al volver a la página
                     document.addEventListener('visibilitychange', () => {
-                        if (!document.hidden) registration.update();
+                        if (!document.hidden && !pendingUpdate) {
+                            registration.update();
+                        }
                     });
-
+                
+                    // Comunicación con el Service Worker
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        console.log('[PWA] Controller cambiado, recargando página...');
+                        window.location.reload();
+                    });
+                
                 } catch (error) {
                     console.error('[PWA] Error:', error);
                 }

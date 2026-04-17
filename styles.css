@@ -164,3 +164,124 @@ button,
     animation: none;
     opacity: 0;
 }
+
+/* ======================================================
+   AJUSTES PARA TARJETAS EN 3 COLUMNAS (MÓVIL)
+   PRECIO EN BOLÍVARES SE MANTIENE GRANDE
+   ====================================================== */
+
+@media (max-width: 639px) {
+    /* Contenedor principal de la tarjeta */
+    .product-card {
+        min-height: auto !important;
+    }
+    
+    /* Padding general de la tarjeta - REDUCIDO */
+    .product-card .relative.bg-slate-50.p-3 {
+        padding: 0.4rem !important;
+    }
+    
+    .product-card .p-3.pt-0 {
+        padding: 0.3rem 0.4rem 0.4rem 0.4rem !important;
+    }
+    
+    /* Título del producto - REDUCIDO (no es crítico) */
+    .product-card h3 {
+        font-size: 0.6rem !important;
+        line-height: 1.2 !important;
+        min-height: 2rem !important;
+    }
+    
+    /* Categoría - REDUCIDA (no es crítica) */
+    .product-card .mb-2.mt-1 span {
+        font-size: 0.5rem !important;
+        padding: 0.1rem 0.3rem !important;
+    }
+    
+    /* ==============================================
+       PRECIO EN BOLÍVARES - SE MANTIENE GRANDE
+       ============================================== */
+    .product-price-ves {
+        margin-bottom: 0.2rem !important;
+    }
+    
+    .product-price-ves span {
+        font-size: 0.9rem !important;  /* Mantenido grande */
+        font-weight: 800 !important;
+    }
+    
+    .product-price-ves svg {
+        width: 0.75rem !important;
+        height: 0.75rem !important;
+    }
+    
+    /* Precio USD - REDUCIDO (es referencial) */
+    .product-card .flex.items-center.gap-1 {
+        gap: 0.2rem !important;
+    }
+    
+    .product-card .flex.items-center.gap-1 .text-xs {
+        font-size: 0.5rem !important;
+    }
+    
+    .product-card .product-price-usd {
+        font-size: 0.55rem !important;
+    }
+    
+    /* Ocultar "referencial" en móvil (ahorra espacio) */
+    .product-card .text-\[10px\].text-slate-300 {
+        display: none !important;
+    }
+    
+    /* Badge de stock - REDUCIDO */
+    .product-card .product-badge {
+        font-size: 0.45rem !important;
+        padding: 0.1rem 0.2rem !important;
+    }
+    
+    .product-card .product-badge svg {
+        width: 0.5rem !important;
+        height: 0.5rem !important;
+    }
+    
+    /* Posición del badge */
+    .product-card .absolute.top-4.right-4 {
+        top: 0.3rem !important;
+        right: 0.3rem !important;
+    }
+    
+    /* Marca de agua "AGOTADO" - REDUCIDA */
+    .product-card .bg-black\/50 .transform {
+        font-size: 0.6rem !important;
+        padding: 0.15rem 0.3rem !important;
+        border-radius: 0.3rem !important;
+    }
+    
+    /* Texto "Referencia visual" - MUY REDUCIDO */
+    .product-card .text-center.text-\[9px\] {
+        font-size: 0.4rem !important;
+        margin-top: 0.2rem !important;
+        padding-top: 0.2rem !important;
+    }
+    
+    /* Icono de paquete (placeholder) */
+    .product-card .w-8.h-8 {
+        width: 1.5rem !important;
+        height: 1.5rem !important;
+    }
+    
+    /* Espaciado entre elementos */
+    .product-card .mt-2 {
+        margin-top: 0.2rem !important;
+    }
+    
+    .product-card .mb-1 {
+        margin-bottom: 0.1rem !important;
+    }
+    
+    .product-card .border-t {
+        margin-top: 0.2rem !important;
+        padding-top: 0.2rem !important;
+    }
+}
+

@@ -876,3 +876,73 @@ La experiencia es inmediata: los productos agotados se ven claramente diferencia
 **Versión**: 3.3.1  
 **Fecha**: 2026-04-16  
 **Estado**: ✅ Estable y en producción
+==========================================================================
+# 📦 SISOV Market - Changelog
+
+## [3.4.0] - 2026-04-17
+
+### 🔧 Corrección de Filtros - Funcionalidad en Móvil y Desktop
+
+#### Problema Identificado
+- Los filtros de categoría, búsqueda y precio solo funcionaban en un dispositivo (móvil o desktop) pero no en ambos
+- `filters.js` solo escuchaba los elementos con IDs específicos (`searchInput`, `categoryFilter`, `priceRange`), ignorando sus contrapartes en el otro layout
+
+#### Solución Implementada
+- **Escucha dual**: `filters.js` ahora escucha **ambos** elementos (móvil y desktop) simultáneamente
+- **Sincronización mejorada**: Los cambios en cualquier dispositivo se reflejan automáticamente en el otro
+- **Limpieza unificada**: El botón "Limpiar filtros" ahora limpia ambos paneles (móvil y desktop)
+
+#### Cambios Técnicos en `filters.js` (v2.0.0 → v2.1.0)
+
+| Función | Cambio |
+|---------|--------|
+| `setupEventListeners()` | Ahora escucha `searchInput` + `searchInputDesktop`, `categoryFilter` + `categoryFilterMobile`, `priceRange` + `priceRangeDesktop` |
+| `limpiarFiltros()` | Limpia ambos conjuntos de elementos (móvil y desktop) |
+| `filtrarPorCategoria()` | Actualiza ambos selects simultáneamente |
+| `aplicarFiltros()` | Actualiza ambos indicadores de precio (`priceRangeValue` y `priceRangeValueDesktop`) |
+
+### 📊 Comportamiento Actual
+
+| Acción | Móvil | Desktop | Estado |
+|--------|-------|---------|--------|
+| Buscar producto | ✅ | ✅ | Funciona en ambos |
+| Seleccionar categoría | ✅ | ✅ | Funciona en ambos |
+| Ajustar precio máximo | ✅ | ✅ | Funciona en ambos |
+| Limpiar filtros | ✅ | ✅ | Funciona en ambos |
+| Click en categoría popular | ✅ | ✅ | Funciona en ambos |
+
+### 📁 Archivos Modificados
+
+| Archivo | Versión | Cambios |
+|---------|---------|---------|
+| `modules/filters.js` | 2.0.0 → 2.1.0 | Escucha dual, limpieza unificada |
+
+---
+
+## [3.3.1] - 2026-04-16
+
+### 🎨 Mejoras de UI/UX
+
+#### Grid de Productos - 2 Columnas en Móvil
+- Cambio de 1 columna a **2 columnas** en dispositivos móviles
+- Mejor aprovechamiento del espacio en pantallas pequeñas
+- Ajustes de padding y tamaños de fuente para legibilidad
+
+#### Precio en Bolívares Destacado
+- Tamaño de fuente aumentado a `1.1rem` en móvil
+- Efecto de gradiente morado para mayor visibilidad
+- Texto "referencial" oculto en móvil para ahorrar espacio
+
+### 📁 Archivos Modificados
+
+| Archivo | Cambios |
+|---------|---------|
+| `index.html` | Grid: `grid-cols-1` → `grid-cols-2` en móvil |
+| `styles.css` | Ajustes de tarjetas para 2 columnas, precio destacado |
+
+---
+
+**Versión**: 3.4.0  
+**Fecha**: 2026-04-17  
+**Estado**: ✅ Estable y en producción
+=======================================================================================

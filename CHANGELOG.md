@@ -839,3 +839,40 @@ Para nuevos usuarios:
 La experiencia es inmediata: los productos agotados se ven claramente diferenciados
 
 © 2024-2026 SISOV PRO - Todos los derechos reservados.
+===================================================================
+# 📦 SISOV Market - Changelog
+
+## [3.3.1] - 2026-04-16
+
+### 🎨 Mejoras de UI/UX
+
+#### Grid de Productos - 3 Columnas en Móvil
+- **Cambio en visualización móvil**: El grid de productos ahora muestra **3 columnas** en dispositivos móviles (antes 1 columna)
+- **Mejor aprovechamiento del espacio**: Los usuarios pueden ver más productos sin necesidad de hacer scroll excesivo
+- **Experiencia tipo catálogo**: Similar a tiendas online profesionales, mostrando múltiples productos por fila
+
+#### Cambios Técnicos
+- Modificada clase Tailwind en `#productGridMarket`:
+  - Antes: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5`
+  - Ahora: `grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`
+
+### 📱 Comportamiento Responsive
+
+| Dispositivo | Antes | Ahora |
+|-------------|-------|-------|
+| Móvil (< 640px) | 1 columna | **3 columnas** |
+| Tablet (640px-1024px) | 2 columnas | **3 columnas** |
+| Desktop (1024px-1280px) | 4 columnas | 4 columnas |
+| Pantalla Grande (>1280px) | 5 columnas | 5 columnas |
+
+### 📁 Archivos Modificados
+
+| Archivo | Cambio |
+|---------|--------|
+| `index.html` | Clases del grid de productos actualizadas |
+
+---
+
+**Versión**: 3.3.1  
+**Fecha**: 2026-04-16  
+**Estado**: ✅ Estable y en producción

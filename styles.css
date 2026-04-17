@@ -2,12 +2,18 @@
    SISOV MARKET - ESTILOS PERSONALIZADOS
    ====================================================== */
 
-/* ---------- HERO GRADIENTE ---------- */
+/* ======================================================
+   1. HERO GRADIENTE
+   ====================================================== */
+
 .hero-gradient {
     background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
 }
 
-/* ---------- TARJETAS DE PRODUCTO ---------- */
+/* ======================================================
+   2. TARJETAS DE PRODUCTO
+   ====================================================== */
+
 .product-card {
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
@@ -17,7 +23,10 @@
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* ---------- SKELETON LOADER ---------- */
+/* ======================================================
+   3. SKELETON LOADER
+   ====================================================== */
+
 .skeleton {
     background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
     background-size: 200% 100%;
@@ -30,7 +39,10 @@
     }
 }
 
-/* ---------- LINE CLAMP (corte de texto) ---------- */
+/* ======================================================
+   4. LINE CLAMP (corte de texto)
+   ====================================================== */
+
 .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -40,7 +52,7 @@
 }
 
 /* ======================================================
-   BADGES DE STOCK
+   5. BADGES DE STOCK
    ====================================================== */
 
 /* Stock disponible (stock > 5) */
@@ -83,7 +95,7 @@
 }
 
 /* ======================================================
-   STICKY HEADER
+   6. STICKY HEADER
    ====================================================== */
 
 .sticky\:top-20 {
@@ -105,7 +117,7 @@
 }
 
 /* ======================================================
-   FONDO CON BLUR
+   7. FONDO CON BLUR
    ====================================================== */
 
 .bg-white\/95 {
@@ -114,7 +126,7 @@
 }
 
 /* ======================================================
-   ACCESIBILIDAD
+   8. ACCESIBILIDAD
    ====================================================== */
 
 /* Focus visible para navegación por teclado */
@@ -134,7 +146,7 @@ button,
 }
 
 /* ======================================================
-   ANIMACIONES
+   9. ANIMACIONES
    ====================================================== */
 
 /* Pulso para el botón de filtros */
@@ -166,122 +178,113 @@ button,
 }
 
 /* ======================================================
-   AJUSTES PARA TARJETAS EN 3 COLUMNAS (MÓVIL)
-   PRECIO EN BOLÍVARES SE MANTIENE GRANDE
+   10. GRID DE PRODUCTOS (RESPONSIVE)
+   ====================================================== */
+
+/* Grid base */
+.product-grid {
+    display: grid;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+/* Desktop: 4 columnas */
+@media (min-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Tablet: 3 columnas */
+@media (min-width: 640px) and (max-width: 1023px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Móvil: 2 columnas */
+@media (max-width: 639px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+/* ======================================================
+   11. TARJETAS EN MÓVIL (2 COLUMNAS)
    ====================================================== */
 
 @media (max-width: 639px) {
-    /* Contenedor principal de la tarjeta */
-    .product-card {
-        min-height: auto !important;
-    }
-    
-    /* Padding general de la tarjeta - REDUCIDO */
+    /* Padding reducido */
     .product-card .relative.bg-slate-50.p-3 {
-        padding: 0.4rem !important;
+        padding: 0.5rem !important;
     }
     
     .product-card .p-3.pt-0 {
-        padding: 0.3rem 0.4rem 0.4rem 0.4rem !important;
+        padding: 0.4rem 0.5rem 0.5rem 0.5rem !important;
     }
     
-    /* Título del producto - REDUCIDO (no es crítico) */
+    /* Título */
     .product-card h3 {
-        font-size: 0.6rem !important;
-        line-height: 1.2 !important;
-        min-height: 2rem !important;
+        font-size: 0.7rem !important;
+        line-height: 1.3 !important;
     }
     
-    /* Categoría - REDUCIDA (no es crítica) */
+    /* Categoría */
     .product-card .mb-2.mt-1 span {
-        font-size: 0.5rem !important;
-        padding: 0.1rem 0.3rem !important;
+        font-size: 0.55rem !important;
+        padding: 0.15rem 0.4rem !important;
     }
     
-    /* ==============================================
-       PRECIO EN BOLÍVARES - SE MANTIENE GRANDE
-       ============================================== */
-    .product-price-ves {
-        margin-bottom: 0.2rem !important;
-    }
     
+    /* PRECIO EN BOLÍVARES - DESTACADO (CON FONDO) */
     .product-price-ves span {
-        font-size: 0.9rem !important;  /* Mantenido grande */
-        font-weight: 800 !important;
+        font-size: 1.1rem !important;
+        font-weight: 900 !important;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
     
     .product-price-ves svg {
-        width: 0.75rem !important;
-        height: 0.75rem !important;
+        width: 0.7rem !important;
+        height: 0.7rem !important;
     }
     
-    /* Precio USD - REDUCIDO (es referencial) */
-    .product-card .flex.items-center.gap-1 {
-        gap: 0.2rem !important;
+    /* Precio USD - referencial pequeño */
+    .product-card .product-price-usd {
+        font-size: 0.6rem !important;
     }
     
     .product-card .flex.items-center.gap-1 .text-xs {
-        font-size: 0.5rem !important;
-    }
-    
-    .product-card .product-price-usd {
         font-size: 0.55rem !important;
     }
     
-    /* Ocultar "referencial" en móvil (ahorra espacio) */
+    /* Ocultar "referencial" en móvil */
     .product-card .text-\[10px\].text-slate-300 {
         display: none !important;
     }
     
-    /* Badge de stock - REDUCIDO */
+    /* Badge de stock */
     .product-card .product-badge {
-        font-size: 0.45rem !important;
-        padding: 0.1rem 0.2rem !important;
+        font-size: 0.5rem !important;
+        padding: 0.1rem 0.3rem !important;
     }
     
     .product-card .product-badge svg {
-        width: 0.5rem !important;
-        height: 0.5rem !important;
+        width: 0.55rem !important;
+        height: 0.55rem !important;
     }
     
-    /* Posición del badge */
-    .product-card .absolute.top-4.right-4 {
-        top: 0.3rem !important;
-        right: 0.3rem !important;
-    }
-    
-    /* Marca de agua "AGOTADO" - REDUCIDA */
+    /* Marca "AGOTADO" */
     .product-card .bg-black\/50 .transform {
         font-size: 0.6rem !important;
-        padding: 0.15rem 0.3rem !important;
-        border-radius: 0.3rem !important;
+        padding: 0.15rem 0.4rem !important;
     }
     
-    /* Texto "Referencia visual" - MUY REDUCIDO */
+    /* Texto "Referencia visual" */
     .product-card .text-center.text-\[9px\] {
-        font-size: 0.4rem !important;
-        margin-top: 0.2rem !important;
-        padding-top: 0.2rem !important;
-    }
-    
-    /* Icono de paquete (placeholder) */
-    .product-card .w-8.h-8 {
-        width: 1.5rem !important;
-        height: 1.5rem !important;
-    }
-    
-    /* Espaciado entre elementos */
-    .product-card .mt-2 {
-        margin-top: 0.2rem !important;
-    }
-    
-    .product-card .mb-1 {
-        margin-bottom: 0.1rem !important;
-    }
-    
-    .product-card .border-t {
-        margin-top: 0.2rem !important;
-        padding-top: 0.2rem !important;
+        font-size: 0.45rem !important;
     }
 }
-
